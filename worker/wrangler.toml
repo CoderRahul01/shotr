@@ -1,0 +1,27 @@
+name = "shotr-api"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Firebase project that issues the app's ID tokens.
+FIREBASE_PROJECT_ID = "REPLACE_WITH_FIREBASE_PROJECT_ID"
+# Free tier: makes before the paywall (SPEC: Usage rules).
+FREE_MAKES = "5"
+# Pro fair-use cap per month. SPEC: set after measuring real cost per make.
+PRO_MONTHLY_MAKES = "300"
+# OpenRouter models. Cheap and fast for sorting, stronger for writing.
+MAKE_MODEL = "anthropic/claude-sonnet-5.5"
+CLASSIFY_MODEL = "anthropic/claude-haiku-4.5"
+VISION_MODEL = "anthropic/claude-haiku-4.5"
+# Landing page origin allowed to post to /v1/waitlist.
+WAITLIST_ORIGINS = "https://shotr.app,https://www.shotr.app"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "shotr"
+database_id = "REPLACE_WITH_D1_DATABASE_ID"
+
+# Secrets (wrangler secret put <NAME>):
+#   OPENROUTER_API_KEY
+#   REVENUECAT_WEBHOOK_AUTH   (the Authorization header value set in RevenueCat)

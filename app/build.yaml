@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      drift_dev:
+        options:
+          # Millisecond precision for timestamps (ordering drafts, week stats).
+          store_date_time_values_as_text: true

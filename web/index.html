@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>shotr: take screenshot, make a shot</title>
+<meta name="description" content="shotr turns the screenshots you never act on into posts, cold emails, build notes and takeaways. In your voice. Android first, iOS next.">
+<meta name="theme-color" content="#08090a">
+<meta name="shotr-api" content="https://api.shotr.app">
+<meta property="og:title" content="shotr: take screenshot, make a shot">
+<meta property="og:description" content="Turn the screenshots you never act on into posts, cold emails, build notes and takeaways. In your voice.">
+<meta property="og:image" content="assets/brag.jpg">
+<meta property="og:video" content="assets/brag.mp4">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<style>
+body{margin:0}
+.s{width:390px;height:844px;background:#08090a;color:#ffffff;font-family:Inter,system-ui,sans-serif;position:relative;overflow:hidden;box-sizing:border-box;font-feature-settings:"cv01","ss03";-webkit-font-smoothing:antialiased}
+.m{font-family:"Geist Mono",ui-monospace,monospace;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#8a8f98;line-height:1.3}
+.q{font-size:13px;color:#8a8f98;line-height:1.45}
+.b{font-size:15px;color:#d0d6e0;line-height:1.5}
+.h{font-size:28px;font-weight:600;letter-spacing:-0.022em;line-height:1.1;color:#ffffff;margin:0}
+.card{background:#0f1011;border:1px solid #23252a;border-radius:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:9999px;border:1px solid #23252a;font-size:13px;color:#d0d6e0;background:transparent;font-family:inherit;white-space:nowrap;box-sizing:border-box}
+.chip.on{background:#ffffff;color:#08090a;border-color:#ffffff;font-weight:500}
+.cnt{font-family:"Geist Mono",ui-monospace,monospace;font-size:11px;color:#8a8f98}
+.chip.on .cnt{color:#383b3f}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;height:52px;border-radius:12px;font-family:inherit;font-size:15px;font-weight:500;border:0;box-sizing:border-box;cursor:pointer}
+.ghost{background:transparent;border:1px solid #383b3f;color:#ffffff}
+.vf{position:relative}
+.vf>span{position:absolute;width:12px;height:12px;border:0 solid #ffffff}
+.vf>.tl{top:-5px;left:-5px;border-top-width:2px;border-left-width:2px}
+.vf>.tr{top:-5px;right:-5px;border-top-width:2px;border-right-width:2px}
+.vf>.bl{bottom:-5px;left:-5px;border-bottom-width:2px;border-left-width:2px}
+.vf>.br{bottom:-5px;right:-5px;border-bottom-width:2px;border-right-width:2px}
+.th{background:#161718;border-radius:6px;overflow:hidden;box-sizing:border-box;display:flex;flex-direction:column;gap:4px;padding:8px}
+.ln{height:4px;border-radius:2px;background:#383b3f}
+.ln2{height:4px;border-radius:2px;background:#23252a}
+.row{display:flex;align-items:center}
+.ic{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:transparent;border:0;color:#d0d6e0;padding:0;border-radius:10px}
+.inp{width:100%;box-sizing:border-box;background:rgba(255,255,255,0.03);border:1px solid #23252a;border-radius:10px;color:#ffffff;font-family:inherit;font-size:15px;padding:14px;outline:none}
+.inp::placeholder{color:#8a8f98}
+.badge{display:inline-flex;align-items:center;height:20px;padding:0 6px;border-radius:4px;background:rgba(255,255,255,0.06);font-family:"Geist Mono",ui-monospace,monospace;font-size:10px;letter-spacing:0.04em;text-transform:uppercase;color:#d0d6e0}
+.nav{position:absolute;left:16px;right:16px;bottom:22px;height:66px;background:rgba(15,16,17,0.86);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:22px;box-shadow:inset 0 0 0 1px #23252a,inset 0 1px 0 rgba(255,255,255,0.05),0 12px 32px rgba(0,0,0,0.5);display:grid;grid-template-columns:repeat(4,minmax(0,1fr));align-items:center;justify-items:center;padding:0 6px;box-sizing:border-box}
+.nv{display:flex;flex-direction:column;align-items:center;gap:3px;font-size:10px;letter-spacing:0.01em;color:#8a8f98;text-decoration:none;min-width:56px;padding:6px 0}
+.cap>span.tl,.cap>span.tr,.cap>span.bl,.cap>span.br{position:absolute;border:0 solid;transition:transform .2s cubic-bezier(.2,.8,.2,1)}
+.cap>.tl{border-top-width:2px;border-left-width:2px}.cap>.tr{border-top-width:2px;border-right-width:2px}.cap>.bl{border-bottom-width:2px;border-left-width:2px}.cap>.br{border-bottom-width:2px;border-right-width:2px}
+.capbtn:hover .cap>.tl{transform:translate(-2px,-2px)}.capbtn:hover .cap>.tr{transform:translate(2px,-2px)}.capbtn:hover .cap>.bl{transform:translate(-2px,2px)}.capbtn:hover .cap>.br{transform:translate(2px,2px)}
+.capbtn:active .capplus{transform:rotate(90deg)}.capplus{transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.sw{width:44px;height:26px;border-radius:13px;background:#23252a;position:relative;flex-shrink:0}
+.sw>span{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:10px;background:#8a8f98}
+a{color:#d0d6e0}a:hover{color:#ffffff}
+button,a,input,textarea{transition:transform .14s cubic-bezier(.2,.8,.2,1),background-color .14s,border-color .14s,color .14s}
+button:active{transform:scale(0.97)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #ffffff;outline-offset:2px}
+.chip:hover{border-color:#383b3f}.ghost:hover{border-color:#62666d}
+.inp:focus{border-color:#d0d6e0}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.rise{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes ctl{from{transform:translate(-9px,-9px);opacity:0}to{transform:none;opacity:1}}
+@keyframes ctr{from{transform:translate(9px,-9px);opacity:0}to{transform:none;opacity:1}}
+@keyframes cbl{from{transform:translate(-9px,9px);opacity:0}to{transform:none;opacity:1}}
+@keyframes cbr{from{transform:translate(9px,9px);opacity:0}to{transform:none;opacity:1}}
+.lock>.tl{animation:ctl .55s cubic-bezier(.2,.9,.2,1) .25s both}.lock>.tr{animation:ctr .55s cubic-bezier(.2,.9,.2,1) .25s both}
+.lock>.bl{animation:cbl .55s cubic-bezier(.2,.9,.2,1) .25s both}.lock>.br{animation:cbr .55s cubic-bezier(.2,.9,.2,1) .25s both}
+.shut{position:relative}
+.shut::after{content:"";position:absolute;inset:-2px;border-radius:50%;border:2px solid currentColor;opacity:0;animation:pulse 2.8s cubic-bezier(.2,.6,.3,1) 1s infinite;pointer-events:none}
+@keyframes pulse{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(1.32);opacity:0}}
+.shut:active>span{transform:scale(0.86)}
+.shut>span{transition:transform .12s cubic-bezier(.2,.8,.2,1)}
+@keyframes sheetUp{from{transform:translateY(100%)}to{transform:none}}
+.sheetIn{animation:sheetUp .5s cubic-bezier(.2,.9,.2,1) .15s both}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.scrimIn{animation:fadeIn .35s ease-out both}
+@keyframes scan{from{top:0}to{top:calc(100% - 2px)}}
+.scan{position:absolute;left:0;right:0;height:2px;background:currentColor;box-shadow:0 0 10px currentColor;animation:scan 1.4s ease-in-out infinite alternate}
+@keyframes blink{50%{opacity:0}}
+.caret{display:inline-block;width:2px;height:1.1em;vertical-align:-0.2em;margin-left:2px;animation:blink 1s steps(1) infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .9s linear infinite}
+@keyframes breathe{50%{opacity:.45}}
+.breathe{animation:breathe 2s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+
+html{scroll-behavior:smooth}
+.wrap{max-width:1160px;margin:0 auto;padding:0 24px;box-sizing:border-box}
+.lnav{display:flex;align-items:center;justify-content:space-between;height:72px}
+.lnav-links{display:flex;gap:28px;font-size:14px}
+.lnav-links a{color:#8a8f98;text-decoration:none}.lnav-links a:hover{color:#ffffff}
+.hero{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:48px;align-items:center;padding:64px 0 120px}
+.d1{font-size:clamp(52px,7.6vw,104px);font-weight:600;letter-spacing:-0.045em;line-height:.95;margin:0}
+.d2{font-size:clamp(34px,4.6vw,60px);font-weight:600;letter-spacing:-0.035em;line-height:1.02;margin:0}
+.lead{font-size:clamp(17px,1.5vw,20px);line-height:1.55;color:#8a8f98;margin:0;max-width:520px}
+.sec{padding:120px 0}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.lcard{background:#0f1011;border-radius:16px;box-shadow:inset 0 0 0 1px #23252a,inset 0 1px 0 rgba(255,255,255,0.04);padding:32px;box-sizing:border-box}
+.cta{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:52px;padding:0 22px;border-radius:12px;font-size:15px;font-weight:500;text-decoration:none;box-sizing:border-box;border:0;font-family:inherit;cursor:pointer;white-space:nowrap}
+.wl{display:flex;gap:8px;padding:6px;border-radius:16px;background:#0f1011;box-shadow:inset 0 0 0 1px #23252a;max-width:460px}
+.wl input{flex:1;min-width:0;background:transparent;border:0;outline:none;color:#ffffff;font-family:inherit;font-size:15px;padding:0 12px}
+.wl input::placeholder{color:#8a8f98}
+.wl:focus-within{box-shadow:inset 0 0 0 1px #62666d}
+.word{display:inline-block;animation:rise .8s cubic-bezier(.2,.8,.2,1) both}
+@keyframes floaty{50%{transform:translateY(-10px)}}
+.floaty{animation:floaty 7s ease-in-out infinite}
+@keyframes drift1{50%{transform:translate(6px,-14px) rotate(-8deg)}}
+@keyframes drift2{50%{transform:translate(-8px,12px) rotate(7deg)}}
+.dr1{animation:drift1 9s ease-in-out infinite}.dr2{animation:drift2 11s ease-in-out infinite}
+@keyframes glow{50%{opacity:.55;transform:scale(1.06)}}
+.glow{animation:glow 6s ease-in-out infinite}
+@keyframes ocycle{0%{opacity:0;transform:translateY(10px)}3%,22%{opacity:1;transform:none}25%,100%{opacity:0;transform:translateY(-10px)}}
+.oc{position:absolute;inset:0;opacity:0;animation:ocycle 12s cubic-bezier(.2,.8,.2,1) infinite}
+@keyframes chipcycle{0%{opacity:.35}3%,22%{opacity:1}25%,100%{opacity:.35}}
+.ochip{animation:chipcycle 12s ease-in-out infinite;opacity:.35}
+@keyframes marq{to{transform:translateX(-50%)}}
+.marq{display:flex;gap:40px;width:max-content;animation:marq 28s linear infinite}
+@supports (animation-timeline: view()){
+.reveal{animation:rise linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+}
+@media (max-width: 900px){
+.hero{grid-template-columns:1fr;padding:32px 0 80px;gap:56px}
+.g3,.g2{grid-template-columns:1fr}
+.lnav-links{display:none}
+.sec{padding:80px 0}
+.lcard{padding:24px}
+.wl{flex-direction:column}
+.wl input{height:48px}
+}
+@keyframes pv-s1k{0.00%{opacity:0}1.88%{opacity:1}33.12%{opacity:1}35.00%{opacity:0}100%{opacity:0}}
+.pv-s1{animation:pv-s1k 16.0s linear infinite both;}
+@keyframes pv-s3k{0%{opacity:0}35.00%{opacity:0}36.88%{opacity:1}43.75%{opacity:1}45.62%{opacity:0}100%{opacity:0}}
+.pv-s3{animation:pv-s3k 16.0s linear infinite both;}
+@keyframes pv-s4k{0%{opacity:0}45.62%{opacity:0}47.50%{opacity:1}63.75%{opacity:1}65.62%{opacity:0}100%{opacity:0}}
+.pv-s4{animation:pv-s4k 16.0s linear infinite both;}
+@keyframes pv-s5k{0%{opacity:0}65.62%{opacity:0}67.50%{opacity:1}83.75%{opacity:1}85.62%{opacity:0}100%{opacity:0}}
+.pv-s5{animation:pv-s5k 16.0s linear infinite both;}
+@keyframes pv-s6k{0%{opacity:0}85.62%{opacity:0}87.50%{opacity:1}98.12%{opacity:1}100.00%{opacity:0}}
+.pv-s6{animation:pv-s6k 16.0s linear infinite both;}
+@keyframes pvg0{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}1.88%{opacity:0;transform:translateY(-28px) rotate(-3deg)}4.69%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g0{animation:pvg0 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg1{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}2.69%{opacity:0;transform:translateY(-28px) rotate(-3deg)}5.50%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g1{animation:pvg1 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg2{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}3.50%{opacity:0;transform:translateY(-28px) rotate(-3deg)}6.31%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g2{animation:pvg2 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg3{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}4.31%{opacity:0;transform:translateY(-28px) rotate(-3deg)}7.12%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g3{animation:pvg3 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg4{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}5.12%{opacity:0;transform:translateY(-28px) rotate(-3deg)}7.94%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g4{animation:pvg4 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg5{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}5.94%{opacity:0;transform:translateY(-28px) rotate(-3deg)}8.75%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g5{animation:pvg5 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg6{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}6.75%{opacity:0;transform:translateY(-28px) rotate(-3deg)}9.56%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g6{animation:pvg6 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg7{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}7.56%{opacity:0;transform:translateY(-28px) rotate(-3deg)}10.38%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g7{animation:pvg7 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvg8{0%{opacity:0;transform:translateY(-28px) rotate(-3deg)}8.38%{opacity:0;transform:translateY(-28px) rotate(-3deg)}11.19%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-g8{animation:pvg8 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvdim{0%{opacity:0}20.62%{opacity:0}23.75%{opacity:.78}100%{opacity:.78}}
+.pv-dim{animation:pvdim 16.0s linear infinite both;}
+@keyframes pvt1k{0%{opacity:0}2.50%{opacity:0}4.38%{opacity:1}19.38%{opacity:1}21.25%{opacity:0}100%{opacity:0}}
+.pv-t1{animation:pvt1k 16.0s linear infinite both;}
+@keyframes pvt2k{0%{opacity:0}21.88%{opacity:0}23.75%{opacity:1}33.12%{opacity:1}35.00%{opacity:0}100%{opacity:0}}
+.pv-t2{animation:pvt2k 16.0s linear infinite both;}
+@keyframes pvsh{0%{transform:scale(.6);opacity:0}35.00%{transform:scale(.6);opacity:0}37.50%{transform:scale(1);opacity:1}38.44%{transform:scale(1)}39.06%{transform:scale(.86)}39.88%{transform:scale(1);opacity:1}41.25%{opacity:0}100%{opacity:0}}
+.pv-sh{animation:pvsh 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvfl{0%{opacity:0}39.12%{opacity:0}39.50%{opacity:.95}42.19%{opacity:0}100%{opacity:0}}
+.pv-fl{animation:pvfl 16.0s ease-out infinite both;}
+@keyframes pvlogo{0%{opacity:0;transform:scale(.92)}40.94%{opacity:0;transform:scale(.92)}42.81%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-logo{animation:pvlogo 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvsheet{0%{transform:translateY(105%)}47.50%{transform:translateY(105%)}50.62%{transform:none}100%{transform:none}}
+.pv-sheet{animation:pvsheet 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvsave{0%{transform:scale(1)}58.13%{transform:scale(1)}58.88%{transform:scale(.93)}59.69%{transform:scale(1)}100%{transform:scale(1)}}
+.pv-save{animation:pvsave 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvsaved{0%{opacity:0}60.00%{opacity:0}61.56%{opacity:1}100%{opacity:1}}
+.pv-saved{animation:pvsaved 16.0s linear infinite both;}
+@keyframes pvl0{0%{opacity:0;transform:translateY(8px)}68.75%{opacity:0;transform:translateY(8px)}70.94%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-l0{animation:pvl0 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvl1{0%{opacity:0;transform:translateY(8px)}71.12%{opacity:0;transform:translateY(8px)}73.31%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-l1{animation:pvl1 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvl2{0%{opacity:0;transform:translateY(8px)}73.50%{opacity:0;transform:translateY(8px)}75.69%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-l2{animation:pvl2 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvl3{0%{opacity:0;transform:translateY(8px)}75.88%{opacity:0;transform:translateY(8px)}78.06%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-l3{animation:pvl3 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvmade{0%{opacity:0;transform:translateY(10px)}80.62%{opacity:0;transform:translateY(10px)}82.50%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-made{animation:pvmade 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}
+@keyframes pvend{0%{opacity:0;transform:translateY(16px)}86.25%{opacity:0;transform:translateY(16px)}89.38%{opacity:1;transform:none}100%{opacity:1;transform:none}}
+.pv-end{animation:pvend 16.0s cubic-bezier(.2,.8,.2,1) infinite both;}</style>
+<style>
+@font-face{font-family:'Inter';font-weight:400;font-style:normal;font-display:swap;src:url(assets/fonts/Inter-Regular.ttf) format('truetype')}
+@font-face{font-family:'Inter';font-weight:500;font-style:normal;font-display:swap;src:url(assets/fonts/Inter-Medium.ttf) format('truetype')}
+@font-face{font-family:'Inter';font-weight:600;font-style:normal;font-display:swap;src:url(assets/fonts/Inter-SemiBold.ttf) format('truetype')}
+@font-face{font-family:'Geist Mono';font-weight:400;font-style:normal;font-display:swap;src:url(assets/fonts/GeistMono-Regular.ttf) format('truetype')}
+@font-face{font-family:'Geist Mono';font-weight:500;font-style:normal;font-display:swap;src:url(assets/fonts/GeistMono-Medium.ttf) format('truetype')}
+[hidden]{display:none!important}
+html,body{overflow-x:clip}
+</style>
+<link rel="preload" href="assets/fonts/Inter-SemiBold.ttf" as="font" type="font/ttf" crossorigin>
+</head>
+<body>
+<div class="s" style="width: 100%; height: auto; min-height: 100vh; overflow: visible; background: #08090a">
+
+<header class="wrap lnav">
+ <div class="row" style="gap: 9px"><div class="vf" style="width: 19px; height: 19px; flex-shrink: 0"><span class="tl" style="border-color: #e4f222; width: 6px; height: 6px; top: 0; left: 0"></span><span class="tr" style="border-color: #e4f222; width: 6px; height: 6px; top: 0; right: 0"></span><span class="bl" style="border-color: #e4f222; width: 6px; height: 6px; bottom: 0; left: 0"></span><span class="br" style="border-color: #e4f222; width: 6px; height: 6px; bottom: 0; right: 0"></span><span style="position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 2px; background: #e4f222; border: 0"></span></div><span style="font-size: 17px; font-weight: 600; letter-spacing: -0.02em">shotr</span></div>
+ <nav class="lnav-links" aria-label="Sections"><a href="#how">How it works</a><a href="#pricing">Pricing</a></nav>
+ <a href="#join" class="cta" style="height: 40px; padding: 0 16px; font-size: 14px; background: #ffffff; color: #08090a">Join the waitlist</a>
+</header>
+
+<main>
+<section class="wrap hero">
+ <div>
+  <div class="m rise" style="margin-bottom: 28px">Android first · iOS next</div>
+  <h1 class="d1"><span class="word" style="animation-delay: 0.00s">Take</span> <span class="word" style="animation-delay: 0.08s">screenshot.</span><br><span class="word" style="animation-delay: 0.16s">Make</span> <span class="word" style="animation-delay: 0.24s">a</span> <span class="word" style="animation-delay: 0.32s">shot.</span><br></h1>
+  <p class="lead rise" style="margin-top: 28px; animation-delay: .45s">shotr turns the screenshots you never act on into posts, cold emails, build notes and takeaways. In your voice.</p>
+  <div class="rise" style="margin-top: 36px; animation-delay: .6s" id="join"><div class="wl-form-wrap"><form class="wl"><label for="em-Get" style="position: absolute; left: -9999px">Email</label><input id="em-Get" type="email" required placeholder="you@email.com" autocomplete="email"><button type="submit" class="cta" style="background: #e4f222; color: #08090a; height: 48px">Get early access</button></form>
+</div>
+<div class="wl-done" hidden><div class="wl rise" style="align-items: center; padding: 14px 18px; gap: 12px"><span style="width: 26px; height: 26px; border-radius: 13px; background: #e4f222; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#08090a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span><span style="font-size: 15px">You're on the list. We'll email you when your invite is ready.</span></div>
+</div></div>
+  <p class="q rise" style="margin-top: 14px; animation-delay: .7s">Free to start. Pro is $19/month.</p>
+ </div>
+ <div class="rise" style="position: relative; display: flex; justify-content: center; padding: 20px 0; animation-delay: .3s"><div class="dr1" style="position: absolute; left: -10px; top: 70px; z-index: 1; opacity: .9; transform: rotate(-8deg)"><div class="vf lock" style="width: 96px; height: 150px; flex-shrink: 0"><div class="th" style="width: 96px; height: 150px; padding: 8px"><div class="row" style="gap: 5px"><div style="width: 14px; height: 14px; border-radius: 3px; background: #62666d; flex-shrink: 0"></div><div class="ln" style="width: 50%"></div></div><div style="height: 8px; width: 80%; border-radius: 2px; background: #8a8f98; margin-top: 4px"></div><div class="row" style="gap: 3px"><div style="height: 8px; width: 22px; border-radius: 4px; background: #23252a"></div><div style="height: 8px; width: 28px; border-radius: 4px; background: #23252a"></div></div><div class="ln2" style="width: 90%; margin-top: 2px"></div><div class="ln2" style="width: 84%"></div><div class="ln2" style="width: 70%"></div></div><span class="tl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="tr" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="bl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="br" style="border-color: #e4f222; width: 14px; height: 14px"></span></div></div><div class="dr2" style="position: absolute; right: -6px; bottom: 90px; z-index: 3; transform: rotate(7deg)"><div class="vf lock" style="width: 92px; height: 144px; flex-shrink: 0"><div class="th" style="width: 92px; height: 144px; padding: 8px"><div style="height: 9px; width: 75%; border-radius: 2px; background: #62666d"></div><div style="height: 9px; width: 50%; border-radius: 2px; background: #62666d"></div><div class="ln2" style="width: 95%; margin-top: 4px"></div><div class="ln2" style="width: 90%"></div><div class="ln2" style="width: 93%"></div><div class="ln2" style="width: 70%"></div><div class="ln2" style="width: 88%"></div><div class="ln2" style="width: 60%"></div></div><span class="tl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="tr" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="bl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="br" style="border-color: #e4f222; width: 14px; height: 14px"></span></div></div><div class="glow" style="position: absolute; left: 50%; top: 50%; width: 420px; height: 420px; margin: -210px 0 0 -210px; border-radius: 50%; background: radial-gradient(closest-side, rgba(255,255,255,0.07), rgba(255,255,255,0))"></div><div class="floaty" style="width: 299px; height: 516px; border-radius: 46px; background: #0f1011; box-shadow: inset 0 0 0 1px #2a2c31, 0 50px 100px rgba(0,0,0,0.6); padding: 10px; box-sizing: border-box; position: relative; z-index: 2"><div style="width: 279px; height: 496px; border-radius: 36px; overflow: hidden; position: relative"><div style="width: 450px; height: 800px; transform: scale(0.62); transform-origin: top left; position: relative">
+<div style="position: absolute; inset: 0; background: #08090a; overflow: hidden; font-family: Inter, system-ui, sans-serif">
+ <div class="pv-s1" style="position: absolute; inset: 0">
+  <div style="position: absolute; left: 33px; top: 200px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; width: 384px"><div class="pv-g0"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="row" style="gap: 5px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #383b3f; flex-shrink: 0"></div><div class="ln" style="width: 40%"></div></div><div class="ln" style="width: 92%; margin-top: 4px"></div><div class="ln" style="width: 80%"></div><div class="ln" style="width: 86%"></div><div class="ln2" style="width: 55%"></div><div style="flex-grow: 1; background: #23252a; border-radius: 4px; margin-top: 4px"></div></div></div><div class="pv-g1"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="row" style="gap: 5px"><div style="width: 14px; height: 14px; border-radius: 3px; background: #62666d; flex-shrink: 0"></div><div class="ln" style="width: 50%"></div></div><div style="height: 8px; width: 80%; border-radius: 2px; background: #8a8f98; margin-top: 4px"></div><div class="row" style="gap: 3px"><div style="height: 8px; width: 22px; border-radius: 4px; background: #23252a"></div><div style="height: 8px; width: 28px; border-radius: 4px; background: #23252a"></div></div><div class="ln2" style="width: 90%; margin-top: 2px"></div><div class="ln2" style="width: 84%"></div><div class="ln2" style="width: 70%"></div></div></div><div class="pv-g2"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div style="height: 9px; width: 75%; border-radius: 2px; background: #62666d"></div><div style="height: 9px; width: 50%; border-radius: 2px; background: #62666d"></div><div class="ln2" style="width: 95%; margin-top: 4px"></div><div class="ln2" style="width: 90%"></div><div class="ln2" style="width: 93%"></div><div class="ln2" style="width: 70%"></div><div class="ln2" style="width: 88%"></div><div class="ln2" style="width: 60%"></div></div></div><div class="pv-g3"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="ln2" style="width: 40%"></div><div style="flex-grow: 1; display: flex; align-items: flex-end; gap: 3px; padding-top: 6px"><div style="flex-grow: 1; height: 40%; background: #383b3f; border-radius: 2px 2px 0 0"></div><div style="flex-grow: 1; height: 65%; background: #383b3f; border-radius: 2px 2px 0 0"></div><div style="flex-grow: 1; height: 50%; background: #383b3f; border-radius: 2px 2px 0 0"></div><div style="flex-grow: 1; height: 85%; background: #383b3f; border-radius: 2px 2px 0 0"></div><div style="flex-grow: 1; height: 70%; background: #383b3f; border-radius: 2px 2px 0 0"></div><div style="flex-grow: 1; height: 95%; background: #383b3f; border-radius: 2px 2px 0 0"></div></div></div></div><div class="pv-g4"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="ln" style="width: 85%"></div><div class="ln" style="width: 90%"></div><div class="ln2" style="width: 60%"></div><div style="height: 1px; background: #23252a; margin: 3px 0"></div><div class="ln" style="width: 80%"></div><div class="ln2" style="width: 92%"></div><div class="ln2" style="width: 50%"></div><div style="height: 1px; background: #23252a; margin: 3px 0"></div><div class="ln" style="width: 70%"></div><div class="ln2" style="width: 85%"></div></div></div><div class="pv-g5"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="row" style="gap: 5px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #383b3f; flex-shrink: 0"></div><div class="ln" style="width: 40%"></div></div><div class="ln" style="width: 92%; margin-top: 4px"></div><div class="ln" style="width: 80%"></div><div class="ln" style="width: 86%"></div><div class="ln2" style="width: 55%"></div><div style="flex-grow: 1; background: #23252a; border-radius: 4px; margin-top: 4px"></div></div></div><div class="pv-g6"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div style="height: 14px; border-radius: 3px; background: #23252a"></div><div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; flex-grow: 1"><div style="background: #23252a; border-radius: 3px"></div><div style="background: #2c2e33; border-radius: 3px"></div><div style="background: #2c2e33; border-radius: 3px"></div><div style="background: #23252a; border-radius: 3px"></div></div></div></div><div class="pv-g7"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div style="height: 9px; width: 75%; border-radius: 2px; background: #62666d"></div><div style="height: 9px; width: 50%; border-radius: 2px; background: #62666d"></div><div class="ln2" style="width: 95%; margin-top: 4px"></div><div class="ln2" style="width: 90%"></div><div class="ln2" style="width: 93%"></div><div class="ln2" style="width: 70%"></div><div class="ln2" style="width: 88%"></div><div class="ln2" style="width: 60%"></div></div></div><div class="pv-g8"><div class="th" style="width: 112px; height: 168px; padding: 10px"><div class="row" style="gap: 5px"><div style="width: 14px; height: 14px; border-radius: 3px; background: #62666d; flex-shrink: 0"></div><div class="ln" style="width: 50%"></div></div><div style="height: 8px; width: 80%; border-radius: 2px; background: #8a8f98; margin-top: 4px"></div><div class="row" style="gap: 3px"><div style="height: 8px; width: 22px; border-radius: 4px; background: #23252a"></div><div style="height: 8px; width: 28px; border-radius: 4px; background: #23252a"></div></div><div class="ln2" style="width: 90%; margin-top: 2px"></div><div class="ln2" style="width: 84%"></div><div class="ln2" style="width: 70%"></div></div></div></div>
+  <div class="pv-dim" style="position: absolute; inset: 0; background: #08090a"></div>
+  <div class="pv-t1" style="position: absolute; left: 32px; right: 32px; font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: #ffffff; top: 72px">You screenshot<br>everything.</div>
+  <div class="pv-t2" style="position: absolute; left: 32px; right: 32px; font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: #ffffff; top: 72px">Then never<br>open it again.</div>
+  <div class="pv-t2 m" style="position: absolute; left: 32px; bottom: 72px">Gallery · unread</div>
+ </div>
+ <div class="pv-s3" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center">
+  <div class="pv-sh"><button type="button" class="shut" aria-label="Make" style="color: #e4f222; width: 132px; height: 132px; border-radius: 50%; border: 2px solid #ffffff; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer"><span style="width: 118px; height: 118px; border-radius: 50%; background: #e4f222; color: #08090a; font-family: Inter, sans-serif; font-weight: 600; font-size: 22px; display: flex; align-items: center; justify-content: center; letter-spacing: -0.01em">Make</span></button></div>
+  <div class="pv-fl" style="position: absolute; inset: 0; background: #ffffff"></div>
+  <div class="pv-logo" style="position: absolute; bottom: 150px; left: 0; right: 0; display: flex; justify-content: center"><div class="row" style="gap: 9px"><div class="vf" style="width: 31px; height: 31px; flex-shrink: 0"><span class="tl" style="border-color: #e4f222; width: 10px; height: 10px; top: 0; left: 0"></span><span class="tr" style="border-color: #e4f222; width: 10px; height: 10px; top: 0; right: 0"></span><span class="bl" style="border-color: #e4f222; width: 10px; height: 10px; bottom: 0; left: 0"></span><span class="br" style="border-color: #e4f222; width: 10px; height: 10px; bottom: 0; right: 0"></span><span style="position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 2px; background: #e4f222; border: 0"></span></div><span style="font-size: 28px; font-weight: 600; letter-spacing: -0.02em">shotr</span></div></div>
+ </div>
+ <div class="pv-s4" style="position: absolute; inset: 0">
+  <div style="position: absolute; left: 32px; right: 32px; font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: #ffffff; top: 72px">Share it.<br>Sorted on your phone.</div>
+  <div style="position: absolute; left: 50%; top: 200px; margin-left: -66px"><div class="vf lock" style="width: 132px; height: 210px; flex-shrink: 0"><div class="th" style="width: 132px; height: 210px; padding: 12px"><div class="row" style="gap: 5px"><div style="width: 14px; height: 14px; border-radius: 3px; background: #62666d; flex-shrink: 0"></div><div class="ln" style="width: 50%"></div></div><div style="height: 8px; width: 80%; border-radius: 2px; background: #8a8f98; margin-top: 4px"></div><div class="row" style="gap: 3px"><div style="height: 8px; width: 22px; border-radius: 4px; background: #23252a"></div><div style="height: 8px; width: 28px; border-radius: 4px; background: #23252a"></div></div><div class="ln2" style="width: 90%; margin-top: 2px"></div><div class="ln2" style="width: 84%"></div><div class="ln2" style="width: 70%"></div></div><span class="tl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="tr" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="bl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="br" style="border-color: #e4f222; width: 14px; height: 14px"></span></div></div>
+  <div class="pv-sheet" style="position: absolute; left: 0; right: 0; bottom: 0; height: 300px; background: #0f1011; border-top: 1px solid #23252a; border-radius: 22px 22px 0 0; padding: 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px">
+   <div class="row" style="justify-content: space-between"><div class="row" style="gap: 9px"><div class="vf" style="width: 16px; height: 16px; flex-shrink: 0"><span class="tl" style="border-color: #e4f222; width: 5px; height: 5px; top: 0; left: 0"></span><span class="tr" style="border-color: #e4f222; width: 5px; height: 5px; top: 0; right: 0"></span><span class="bl" style="border-color: #e4f222; width: 5px; height: 5px; bottom: 0; left: 0"></span><span class="br" style="border-color: #e4f222; width: 5px; height: 5px; bottom: 0; right: 0"></span><span style="position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 2px; background: #e4f222; border: 0"></span></div><span style="font-size: 15px; font-weight: 600; letter-spacing: -0.02em">shotr</span></div><span class="m">Read on device</span></div>
+   <span class="m" style="margin-top: 6px">Detected</span>
+   <span class="chip" style="align-self: flex-start; color: #ffffff; border-color: #383b3f">Hiring post <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"></path></svg></span>
+   <span style="font-size: 18px; font-weight: 500">Founding engineer, seed-stage dev tools team</span>
+   <div class="pv-save btn" style="background: #e4f222; color: #08090a; margin-top: auto; position: relative">Save
+     <div class="pv-saved" style="position: absolute; inset: 0; border-radius: 12px; background: #e4f222; display: flex; align-items: center; justify-content: center; gap: 8px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#08090a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Saved</div></div>
+  </div>
+ </div>
+ <div class="pv-s5" style="position: absolute; inset: 0">
+  <div style="position: absolute; left: 32px; right: 32px; font-size: 30px; font-weight: 600; letter-spacing: -0.025em; line-height: 1.1; color: #ffffff; top: 72px">Make it.<br>In your voice.</div>
+  <div class="card" style="position: absolute; left: 32px; right: 32px; top: 210px; padding: 22px; display: flex; flex-direction: column; gap: 14px; font-size: 17px; line-height: 1.5; color: #ffffff">
+   <div class="row" style="justify-content: space-between"><span class="m">Cold email · your voice</span><span class="badge">AI draft</span></div>
+   <p class="pv-l0" style="margin: 0">Hi [Name],</p><p class="pv-l1" style="margin: 0">Saw you're hiring a founding engineer. I've shipped two dev tools from zero, solo.</p><p class="pv-l2" style="margin: 0">Here's one that maps to your roadmap: [link]</p><p class="pv-l3" style="margin: 0">Open to a 15-minute call this week?</p>
+  </div>
+  <div class="pv-made row" style="position: absolute; left: 32px; bottom: 96px; gap: 12px"><span style="width: 32px; height: 32px; border-radius: 16px; background: #e4f222; display: flex; align-items: center; justify-content: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#08090a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span><span style="font-size: 17px; font-weight: 500">Shared. Marked made.</span></div>
+ </div>
+ <div class="pv-s6" style="position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0 36px">
+  <div class="pv-end">
+   <div class="row" style="gap: 9px"><div class="vf" style="width: 22px; height: 22px; flex-shrink: 0"><span class="tl" style="border-color: #e4f222; width: 7px; height: 7px; top: 0; left: 0"></span><span class="tr" style="border-color: #e4f222; width: 7px; height: 7px; top: 0; right: 0"></span><span class="bl" style="border-color: #e4f222; width: 7px; height: 7px; bottom: 0; left: 0"></span><span class="br" style="border-color: #e4f222; width: 7px; height: 7px; bottom: 0; right: 0"></span><span style="position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 2px; background: #e4f222; border: 0"></span></div><span style="font-size: 20px; font-weight: 600; letter-spacing: -0.02em">shotr</span></div>
+   <div style="font-size: 52px; font-weight: 600; letter-spacing: -0.035em; line-height: 1.02; margin-top: 28px">Take screenshot.<br>Make a shot.</div>
+   <div class="m" style="margin-top: 24px">Android first · iOS too</div>
+  </div>
+ </div>
+</div></div></div></div></div>
+</section>
+
+<div style="border-top: 1px solid #161718; border-bottom: 1px solid #161718; overflow: hidden; padding: 18px 0">
+ <div class="marq"><span class="m" style="font-size: 12px; color: #8a8f98">Images stay on your phone</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">Text read on device</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">OTPs and card numbers never leave</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">Drafts in your voice</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">No streaks, no guilt</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">Images stay on your phone</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">Text read on device</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">OTPs and card numbers never leave</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">Drafts in your voice</span><span style="color: #383b3f">◇</span><span class="m" style="font-size: 12px; color: #8a8f98">No streaks, no guilt</span><span style="color: #383b3f">◇</span></div>
+</div>
+
+
+<section class="sec" id="video" style="padding-top: 96px; padding-bottom: 0">
+ <div class="wrap">
+  <div class="reveal" style="border-radius: 20px; overflow: hidden; box-shadow: inset 0 0 0 1px #23252a, 0 40px 100px rgba(0,0,0,.55); background: #0f1011; aspect-ratio: 16 / 9">
+   <video src="assets/brag.mp4" poster="assets/brag.jpg" autoplay muted loop playsinline preload="metadata" aria-label="shotr in 21 seconds: share a screenshot, it's sorted on your phone, one tap makes a draft in your voice" style="width: 100%; height: 100%; display: block; object-fit: cover"></video>
+  </div>
+  <div class="row" style="justify-content: space-between; margin-top: 14px; flex-wrap: wrap; gap: 8px">
+   <span class="m">shotr in 21 seconds</span>
+   <button type="button" class="m" id="sound" style="background: transparent; border: 0; cursor: pointer; color: #d0d6e0">Sound on</button>
+  </div>
+ </div>
+</section>
+<section class="sec">
+ <div class="wrap">
+  <div class="lcard reveal" style="padding: clamp(28px, 5vw, 64px); display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 48px; align-items: center">
+   <div style="display: flex; flex-direction: column; gap: 22px">
+    <span class="m">One screenshot. Four outcomes.</span>
+    <h2 class="d2">Every screenshot has a job.</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px"><span class="chip ochip" style="animation-delay: 0s">X/LinkedIn post</span><span class="chip ochip" style="animation-delay: 3s">Cold email</span><span class="chip ochip" style="animation-delay: 6s">Build note</span><span class="chip ochip" style="animation-delay: 9s">Takeaways</span></div>
+   </div>
+   <div class="row" style="gap: 28px; align-items: center">
+    <div class="vf lock" style="width: 92px; height: 150px; flex-shrink: 0"><div class="th" style="width: 92px; height: 150px; padding: 8px"><div style="height: 9px; width: 75%; border-radius: 2px; background: #62666d"></div><div style="height: 9px; width: 50%; border-radius: 2px; background: #62666d"></div><div class="ln2" style="width: 95%; margin-top: 4px"></div><div class="ln2" style="width: 90%"></div><div class="ln2" style="width: 93%"></div><div class="ln2" style="width: 70%"></div><div class="ln2" style="width: 88%"></div><div class="ln2" style="width: 60%"></div></div><span class="tl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="tr" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="bl" style="border-color: #e4f222; width: 14px; height: 14px"></span><span class="br" style="border-color: #e4f222; width: 14px; height: 14px"></span></div>
+    <div style="position: relative; flex: 1; min-height: 220px"><div class="oc" style="animation-delay: 0s; display: flex; flex-direction: column; gap: 14px"><span class="m"><span style="color: #8a8f98">Startup playbook</span> → <span style="color: #ffffff">X/LinkedIn post</span></span><p style="margin: 0; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -0.015em; color: #ffffff">A 3-person team didn't launch to everyone. They picked their first 100 users by hand. Doing the same this week.</p><span class="badge" style="align-self: flex-start">AI draft · your voice</span></div><div class="oc" style="animation-delay: 3s; display: flex; flex-direction: column; gap: 14px"><span class="m"><span style="color: #8a8f98">Hiring post</span> → <span style="color: #ffffff">Cold email</span></span><p style="margin: 0; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -0.015em; color: #ffffff">Hi [Name], saw you're hiring a founding engineer. I've shipped two dev tools from zero. Open to a 15-minute call?</p><span class="badge" style="align-self: flex-start">AI draft · your voice</span></div><div class="oc" style="animation-delay: 6s; display: flex; flex-direction: column; gap: 14px"><span class="m"><span style="color: #8a8f98">Product idea</span> → <span style="color: #ffffff">Build note</span></span><p style="margin: 0; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -0.015em; color: #ffffff">Try: share sheet that closes in under a second. Test with 5 users Friday. Kill it if nobody notices.</p><span class="badge" style="align-self: flex-start">AI draft · your voice</span></div><div class="oc" style="animation-delay: 9s; display: flex; flex-direction: column; gap: 14px"><span class="m"><span style="color: #8a8f98">Learning</span> → <span style="color: #ffffff">Takeaways</span></span><p style="margin: 0; font-size: clamp(20px, 2.2vw, 28px); line-height: 1.4; letter-spacing: -0.015em; color: #ffffff">1. Hooks beat headlines. 2. One idea per post. 3. End with a question you want answered.</p><span class="badge" style="align-self: flex-start">AI draft · your voice</span></div></div>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="sec" id="how" style="padding-top: 0">
+ <div class="wrap">
+  <h2 class="d2 reveal" style="margin-bottom: 40px">Three taps. Done.</h2>
+  <div class="g3">
+   <div class="lcard reveal" style="display: flex; flex-direction: column; gap: 14px; padding: 24px"><div style="height: 168px; border-radius: 12px; background: #08090a; display: flex; align-items: center; justify-content: center; overflow: hidden"><div class="row" style="gap: 20px"><div class="vf lock" style="width: 70px; height: 112px; flex-shrink: 0"><div class="th" style="width: 70px; height: 112px; padding: 8px"><div class="row" style="gap: 5px"><div style="width: 12px; height: 12px; border-radius: 6px; background: #383b3f; flex-shrink: 0"></div><div class="ln" style="width: 40%"></div></div><div class="ln" style="width: 92%; margin-top: 4px"></div><div class="ln" style="width: 80%"></div><div class="ln" style="width: 86%"></div><div class="ln2" style="width: 55%"></div><div style="flex-grow: 1; background: #23252a; border-radius: 4px; margin-top: 4px"></div></div><span class="tl" style="border-color: #e4f222; width: 10px; height: 10px"></span><span class="tr" style="border-color: #e4f222; width: 10px; height: 10px"></span><span class="bl" style="border-color: #e4f222; width: 10px; height: 10px"></span><span class="br" style="border-color: #e4f222; width: 10px; height: 10px"></span></div><span style="color: #62666d; font-size: 20px">→</span><div style="width: 52px; height: 52px; border-radius: 26px; background: #161718; display: flex; align-items: center; justify-content: center; color: #ffffff"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 8l5-5 5 5M5 13v6a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-6"></path></svg></div></div></div><div class="row" style="gap: 10px; margin-top: 6px"><span class="m">01</span><h3 style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.015em">Share</h3></div><p class="b" style="margin: 0; color: #8a8f98; font-size: 15px">From any app. The sheet closes fast and drops you back where you were.</p></div>
+   <div class="lcard reveal" style="display: flex; flex-direction: column; gap: 14px; padding: 24px"><div style="height: 168px; border-radius: 12px; background: #08090a; display: flex; align-items: center; justify-content: center; overflow: hidden"><div style="display: flex; flex-direction: column; gap: 8px; width: 220px"><div class="row" style="justify-content: space-between; padding: 8px 12px; border-radius: 8px; box-shadow: inset 0 0 0 1px #23252a"><span style="font-size: 13px; color: #d0d6e0">Hiring post</span><span class="cnt">1</span></div><div class="row" style="justify-content: space-between; padding: 8px 12px; border-radius: 8px; box-shadow: inset 0 0 0 1px #23252a"><span style="font-size: 13px; color: #d0d6e0">Startup playbook</span><span class="cnt">3</span></div><div class="row" style="justify-content: space-between; padding: 8px 12px; border-radius: 8px; box-shadow: inset 0 0 0 1px #23252a"><span style="font-size: 13px; color: #d0d6e0">AI update</span><span class="cnt">2</span></div></div></div><div class="row" style="gap: 10px; margin-top: 6px"><span class="m">02</span><h3 style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.015em">Sorted</h3></div><p class="b" style="margin: 0; color: #8a8f98; font-size: 15px">Read on your phone. Category, title and one-line gist. Works offline.</p></div>
+   <div class="lcard reveal" style="display: flex; flex-direction: column; gap: 14px; padding: 24px"><div style="height: 168px; border-radius: 12px; background: #08090a; display: flex; align-items: center; justify-content: center; overflow: hidden"><div class="row" style="gap: 20px"><button type="button" class="shut" aria-label="Make" style="color: #e4f222; width: 76px; height: 76px; border-radius: 50%; border: 2px solid #ffffff; background: transparent; padding: 0; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer"><span style="width: 62px; height: 62px; border-radius: 50%; background: #e4f222; color: #08090a; font-family: Inter, sans-serif; font-weight: 600; font-size: 13px; display: flex; align-items: center; justify-content: center; letter-spacing: -0.01em">Make</span></button><div style="display: flex; flex-direction: column; gap: 6px; width: 110px"><div class="ln" style="width: 100%; background: #8a8f98"></div><div class="ln" style="width: 85%; background: #8a8f98"></div><div class="ln" style="width: 92%; background: #8a8f98"></div><div class="ln2" style="width: 60%"></div></div></div></div><div class="row" style="gap: 10px; margin-top: 6px"><span class="m">03</span><h3 style="margin: 0; font-size: 20px; font-weight: 600; letter-spacing: -0.015em">Make</h3></div><p class="b" style="margin: 0; color: #8a8f98; font-size: 15px">Tap the shutter. Tweak the draft. Share it. Shared means made.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="sec" id="pricing" style="padding-top: 0">
+ <div class="wrap">
+  <h2 class="d2 reveal" style="margin-bottom: 40px">Start free. Go Pro when it sticks.</h2>
+  <div class="g2">
+   <div class="lcard reveal" style="display: flex; flex-direction: column">
+    <span class="m">Free</span>
+    <div style="font-size: 56px; font-weight: 600; letter-spacing: -0.04em; margin-top: 14px; line-height: 1">$0</div>
+    <ul style="list-style: none; margin: 28px 0 32px; padding: 0"><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Unlimited saving and sorting</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Search inside every screenshot</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>5 makes to try it</li></ul>
+    <a href="#join" class="cta" style="margin-top: auto; box-shadow: inset 0 0 0 1px #383b3f; color: #ffffff">Start free</a>
+   </div>
+   <div class="lcard reveal" style="display: flex; flex-direction: column; box-shadow: inset 0 0 0 1px #62666d, inset 0 1px 0 rgba(255,255,255,0.06), 0 30px 80px rgba(0,0,0,0.45)">
+    <div class="row" style="justify-content: space-between"><span class="m" style="color: #ffffff">Pro</span><span class="badge">Cancel anytime</span></div>
+    <div class="row" style="gap: 8px; align-items: baseline; margin-top: 14px"><span style="font-size: 56px; font-weight: 600; letter-spacing: -0.04em; line-height: 1">$19</span><span class="q">/ month</span></div>
+    <ul style="list-style: none; margin: 28px 0 32px; padding: 0"><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Posts, cold emails, build notes, takeaways</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Every draft in your voice</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Reads image-only screenshots too</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Weekly witness every Sunday</li><li class="row" style="gap: 12px; padding: 9px 0; font-size: 15px; color: #d0d6e0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg>Generous monthly makes</li></ul>
+    <a href="#join" class="cta" style="margin-top: auto; background: #e4f222; color: #08090a">Get early access</a>
+   </div>
+  </div>
+ </div>
+</section>
+
+<section class="sec" style="padding-top: 40px">
+ <div class="wrap" style="display: flex; flex-direction: column; align-items: center; text-align: center">
+  <div class="vf lock reveal" style="padding: 32px 40px"><span class="tl" style="border-color: #e4f222; width: 24px; height: 24px"></span><span class="tr" style="border-color: #e4f222; width: 24px; height: 24px"></span><span class="bl" style="border-color: #e4f222; width: 24px; height: 24px"></span><span class="br" style="border-color: #e4f222; width: 24px; height: 24px"></span>
+   <h2 class="d1" style="font-size: clamp(44px, 6.4vw, 88px)">Stop collecting.<br>Start making.</h2>
+  </div>
+  <div style="margin-top: 40px; width: 100%; display: flex; justify-content: center"><div class="wl-form-wrap"><form class="wl"><label for="em-Joi" style="position: absolute; left: -9999px">Email</label><input id="em-Joi" type="email" required placeholder="you@email.com" autocomplete="email"><button type="submit" class="cta" style="background: #e4f222; color: #08090a; height: 48px">Join the waitlist</button></form>
+</div>
+<div class="wl-done" hidden><div class="wl rise" style="align-items: center; padding: 14px 18px; gap: 12px"><span style="width: 26px; height: 26px; border-radius: 13px; background: #e4f222; display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#08090a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L20 7"></path></svg></span><span style="font-size: 15px">You're on the list. We'll email you when your invite is ready.</span></div>
+</div></div>
+ </div>
+</section>
+</main>
+
+<footer class="wrap row" style="justify-content: space-between; height: 96px; border-top: 1px solid #161718; flex-wrap: wrap; gap: 16px">
+ <div class="row" style="gap: 9px"><div class="vf" style="width: 16px; height: 16px; flex-shrink: 0"><span class="tl" style="border-color: #e4f222; width: 5px; height: 5px; top: 0; left: 0"></span><span class="tr" style="border-color: #e4f222; width: 5px; height: 5px; top: 0; right: 0"></span><span class="bl" style="border-color: #e4f222; width: 5px; height: 5px; bottom: 0; left: 0"></span><span class="br" style="border-color: #e4f222; width: 5px; height: 5px; bottom: 0; right: 0"></span><span style="position: absolute; left: 50%; top: 50%; width: 4px; height: 4px; margin: -2px 0 0 -2px; border-radius: 2px; background: #e4f222; border: 0"></span></div><span style="font-size: 15px; font-weight: 600; letter-spacing: -0.02em">shotr</span></div>
+ <div class="row" style="gap: 24px"><a href="#" style="font-size: 13px; color: #8a8f98; text-decoration: none">Privacy</a><a href="#" style="font-size: 13px; color: #8a8f98; text-decoration: none">Terms</a><span class="m">© 2026 shotr</span></div>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  // Waitlist -> Cloudflare Worker (worker/src/index.ts: POST /v1/waitlist).
+  var API = (document.querySelector('meta[name="shotr-api"]') || {}).content || 'https://api.shotr.app';
+  function joined() {
+    document.querySelectorAll('.wl-form-wrap').forEach(function (n) { n.hidden = true; });
+    document.querySelectorAll('.wl-done').forEach(function (n) { n.hidden = false; });
+  }
+  try { if (localStorage.getItem('shotr-joined')) joined(); } catch (e) {}
+  document.querySelectorAll('form.wl').forEach(function (form) {
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var input = form.querySelector('input[type=email]');
+      var btn = form.querySelector('button');
+      var label = btn.textContent;
+      btn.disabled = true; btn.textContent = 'Joining…';
+      fetch(API + '/v1/waitlist', {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ email: input.value, source: 'landing', referrer: document.referrer })
+      }).then(function (r) {
+        if (!r.ok) throw new Error('bad');
+        try { localStorage.setItem('shotr-joined', '1'); } catch (e) {}
+        joined();
+      }).catch(function () {
+        btn.disabled = false; btn.textContent = label;
+        input.setCustomValidity('Could not join right now. Try again.'); input.reportValidity();
+        setTimeout(function () { input.setCustomValidity(''); }, 3000);
+      });
+    });
+  });
+  var v = document.querySelector('#video video'), s = document.getElementById('sound');
+  if (v && s) s.addEventListener('click', function () { v.muted = !v.muted; s.textContent = v.muted ? 'Sound on' : 'Sound off'; if (!v.muted) v.play(); });
+  if (v && window.matchMedia('(prefers-reduced-motion: reduce)').matches) { v.removeAttribute('autoplay'); v.pause(); v.controls = true; }
+})();
+</script>
+</body>
+</html>

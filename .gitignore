@@ -1,0 +1,15 @@
+# Node / Worker
+node_modules/
+worker/.wrangler/
+worker/dist/
+worker/.dev.vars
+
+# Secrets: never commit
+**/android/key.properties
+*.jks
+*.keystore
+.env
+.env.*
+
+# OS
+.DS_Store

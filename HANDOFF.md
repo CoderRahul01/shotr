@@ -29,6 +29,8 @@ download the Android SDK). CI builds it on GitHub; see section 6.
 
 ## 2. Clone and run locally (about 15 minutes)
 
+**Full step-by-step guide, from a blank laptop: `docs/LOCAL_SETUP.md`.** Short version below.
+
 You need: Flutter 3.47.5, Android Studio (for the emulator and SDK), Node 22, Git.
 
 ```bash

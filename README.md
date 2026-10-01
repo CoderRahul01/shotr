@@ -28,6 +28,6 @@ cd worker && npm install && npm test && npm run dev
 cd web && npm run dev
 ```
 
-**Start here: `HANDOFF.md`** (keys, deploys, Play Store, prompt for your coding agent).
+**Start here: `HANDOFF.md`** (keys, deploys, Play Store, prompt for your coding agent). Local setup: `docs/LOCAL_SETUP.md`.
 
 Pricing: Free (unlimited saving and sorting, 5 makes) and shotr Pro at $19/month.

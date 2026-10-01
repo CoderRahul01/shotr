@@ -192,7 +192,8 @@ Builder-first, direct, short. Matches the founder's voice card.
 - Every primary CTA leads to the email waitlist until launch.
 - Pricing shown as: Free ($0) and Pro ($19/month, cancel anytime).
 - Hero headline: "Take screenshot. Make a shot."
-- Allowed motion: word-by-word headline rise, floating phone with the promo loop, drifting framed screenshots, scroll reveal, a slow trust marquee.
+- Allowed motion: word-by-word headline rise, viewfinder corners locking onto the key phrase, a live product demo in the phone (share, read, sort, make, typed draft), a viewfinder that follows the cursor in the hero, a scroll-driven sort (messy pile to labelled stacks), typing outcome tabs, scroll reveal, a slow trust marquee, a soft white shutter flash on waitlist submit.
+- Show the product working instead of decorating: no gradient blobs, glows or abstract AI art.
 - Imagery: real product UI, abstract framed screenshots, the promo loop. No stock photos, no people, no 3D blobs.
 - Promo video: 16s vertical loop, `marketing/shotr-promo-1080x1920.mp4`. Scenes: screenshot pile, shutter flash, share sheet, draft, end card.
 

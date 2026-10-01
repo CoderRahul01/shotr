@@ -5,3 +5,5 @@
 -dontwarn com.google.mlkit.vision.text.korean.**
 # RevenueCat
 -keep class com.revenuecat.purchases.** { *; }
+# Flutter deferred components reference Play Core; not used by shotr.
+-dontwarn com.google.android.play.core.**

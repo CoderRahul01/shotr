@@ -1,0 +1,10 @@
+{
+  "name": "shotr-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "dev:vercel": "vercel dev",
+    "test": "node --test test/*.test.js"
+  }
+}

@@ -184,36 +184,20 @@ Apple Developer ($99/yr) > follow `app/docs/ios-share-extension.md` on a Mac > T
 
 ---
 
-## 7. Landing page images (Nano Banana / Gemini, Higgsfield, Midjourney)
+## 7. Landing page images and videos
 
-The page already has slots. **Missing files render nothing**, so drop them in whenever they're ready.
-Save as WebP (quality ~80) into `web/assets/img/`, then push.
+Exact Nano Banana (images) and Veo (video) prompts, sizes and export commands are in
+**`docs/AI_ASSET_PROMPTS.md`**. Slots already on the page (missing files render nothing):
 
-| File | Size (ratio) | Where it shows |
+| File | Size | Where |
 |---|---|---|
-| `hero.webp` | 2400×1350 (16:9) | soft glow behind the phone in the hero, faded at the edges |
-| `story.webp` | 2520×1080 (21:9) | full-width band under the video (desktop) |
-| `story-mobile.webp` | 1600×1200 (4:3) | same band on phones |
-| `og.jpg` | 1200×630 | link previews on X, LinkedIn, WhatsApp (currently a frame from the launch video) |
+| `web/assets/img/story.webp` | 2520×1080 (21:9) | band under the video, desktop |
+| `web/assets/img/story-mobile.webp` | 1600×1200 (4:3) | same band on phones |
+| `web/assets/video/story.mp4` | 1920×1080, 8 s loop | replaces the still when present |
+| `web/assets/img/og.jpg` | 1200×630 | link previews |
 
-Style rules (from DESIGN.md): near-black `#08090A`, one acid-lime `#E4F222` accent, no other colors,
-no readable text, no logos, no faces, calm and premium, lots of negative space.
-
-**hero.webp**
-> Cinematic macro photograph in near-total darkness, background pure #08090A. A few translucent glass
-> cards shaped like phone screenshots float at different depths, softly out of focus, edges catching a
-> thin acid-lime (#E4F222) rim light. Subject centered, edges fade to black. Shallow depth of field,
-> subtle film grain, minimal, premium tech product mood. No text, no logos, no people. 16:9.
-
-**story.webp** (and the same prompt at 4:3 for `story-mobile.webp`)
-> Moody night-time photo of a modern smartphone lying on a dark matte desk, seen from a low 3/4 angle.
-> The screen glows softly and shows an abstract blurred screenshot framed by four thin acid-lime
-> (#E4F222) corner brackets like a camera viewfinder. Everything else is near-black (#08090A) with
-> gentle falloff. Minimal, calm, editorial, shallow depth of field. No readable text on the screen,
-> no logos, no hands, no faces. 21:9 ultra-wide composition with the phone in the right third.
-
-**og.jpg**: better made from the design than generated (AI images mangle text). Keep the current
-frame, or screenshot the hero at 1200×630.
+The motion on the page itself (live demo phone, viewfinder lock, cursor frame, scroll-driven sorting,
+typing outcomes, video controls) is code in `web/main.js` and `web/styles.css`, not generated media.
 
 ---
 

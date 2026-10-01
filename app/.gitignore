@@ -50,3 +50,7 @@ app.*.map.json
 # Release signing (see app/README.md)
 android/key.properties
 *.jks
+
+# Build-time config (copy env/example.json)
+env/*.json
+!env/example.json

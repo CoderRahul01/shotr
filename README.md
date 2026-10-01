@@ -10,7 +10,7 @@ in their own voice.
 | `DESIGN.md` | Design system. Every new screen is checked against it |
 | `app/` | Flutter app, Android first, iOS from the same code. See `app/README.md` |
 | `worker/` | Cloudflare Worker: auth, quota, makes via OpenRouter, waitlist. See `worker/README.md` |
-| `web/` | Landing page with the launch video and email waitlist (static, deploy to Cloudflare Pages) |
+| `web/` | Landing page with the launch video; waitlist goes to a Google Sheet. Deploys on Vercel |
 | `marketing/` | Promo loop (vertical) and the 21s launch video made with the brag skill |
 
 Design canvas (all screens, promo, landing): https://claude.ai/artifact/7wMikfoK3Ptq7fGhjyd9jX
@@ -24,8 +24,10 @@ cd app && flutter pub get && dart run build_runner build && flutter test && flut
 # worker
 cd worker && npm install && npm test && npm run dev
 
-# landing page
-npx wrangler pages deploy web --project-name shotr-web
+# landing page (http://localhost:3000)
+cd web && npm run dev
 ```
+
+**Start here: `HANDOFF.md`** (keys, deploys, Play Store, prompt for your coding agent). Local setup: `docs/LOCAL_SETUP.md`.
 
 Pricing: Free (unlimited saving and sorting, 5 makes) and shotr Pro at $19/month.

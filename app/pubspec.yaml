@@ -20,7 +20,8 @@ dependencies:
   shared_preferences: ^2.5.5
 
   # Capture and reading
-  receive_sharing_intent: ^1.9.0
+  # 1.9.0 needs compileSdk 37, which AGP 9.1 does not support yet. Bump with AGP.
+  receive_sharing_intent: 1.8.1
   image_picker: ^1.2.3
   google_mlkit_text_recognition: ^0.17.1
   flutter_image_compress: ^2.5.1

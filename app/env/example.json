@@ -1,0 +1,6 @@
+{
+  "SHOTR_API_URL": "http://10.0.2.2:8787",
+  "RC_ANDROID_KEY": "goog_xxxxxxxxxxxxxxxxxxxxxxxx",
+  "RC_IOS_KEY": "appl_xxxxxxxxxxxxxxxxxxxxxxxx",
+  "GOOGLE_SERVER_CLIENT_ID": "1234567890-xxxxxxxx.apps.googleusercontent.com"
+}
